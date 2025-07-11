@@ -51,28 +51,31 @@ const { Op } = require('sequelize')
 
 const buscarPorNome = async (req, res) => {
     try {
-        const nome = req.params.nome
+        const nome = req.params.nome.toLowerCase();
 
         const resultados = await Usuario.findAll({
-            where: {
-                nome: {
-                    [Op.like]: `%${nome}%`
-                }
-            }
-        })
+            where: sequelize.where(
+                sequelize.fn('LOWER', sequelize.col('nome')),
+                'LIKE',
+                `%${nome}%`
+            )
+        });
 
         if (resultados.length > 0) {
-            console.log('dados encontrados com sucesso.')
-            res.status(200).json(resultados)
+            console.log('usuários encontrados com sucesso.');
+            res.status(200).json(resultados);
         } else {
-            console.log('nenhum dado encontrado com esse nome.')
-            res.status(404).json({ message: 'nenhum dado encontrado.' })
+            console.log('nenhum usuário encontrado com esse nome.');
+            res.status(404).json({ message: 'dado não encontrado.' });
         }
     } catch (err) {
-        console.error('erro ao buscar por nome: ', err)
-        res.status(500).json({ message: 'erro ao buscar por nome.', err })
+        console.error('erro ao buscar por nome: ', err);
+        res.status(500).json({
+            message: 'erro ao buscar por nome.',
+            error: err
+        });
     }
-}
+};
 
 const apagar = async (req, res) => {
     const id = req.params.id
