@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gerenciador de Produtos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1,
+        h2 {
+            text-align: center;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: none;
+            /* Hide sections by default */
+        }
+
+        .section.active {
+            display: block;
+            /* Show only the active section */
+        }
+
+        input,
+        textarea {
+            padding: 5px;
+            margin: 5px;
+            width: 200px;
+        }
+
+        textarea {
+            height: 100px;
+            vertical-align: top;
+        }
+
+        button {
+            padding: 5px 10px;
+            margin: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 5px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f0f0f0;
+        }
+
+        .res-cadastrar {
+            margin-top: 10px;
+            color: green;
+        }
+
+        .error {
+            color: red;
+        }
+
+        nav {
+            background-color: #f0f0f0;
+            padding: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        nav a:hover {
+            color: #007bff;
+        }
+
+        nav a.active {
+            color: #007bff;
+            border-bottom: 2px solid #007bff;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header de navegação -->
+    <header style="background:#f0f0f0; padding:15px; text-align:center; margin-bottom:20px;">
+        <a href="index.html" style="margin:0 15px; text-decoration:none; color:#333; font-weight:bold;">Início</a>
+        <a href="usuario.html" style="margin:0 15px; text-decoration:none; color:#333; font-weight:bold;">Usuários</a>
+        <a href="produto.html" style="margin:0 15px; text-decoration:none; color:#333; font-weight:bold;">Produtos</a>
+        <a href="compra.html" style="margin:0 15px; text-decoration:none; color:#333; font-weight:bold;">Compras</a>
+    </header>
+    <h1>Gerenciador de Produtos</h1>
+
+    <!-- Menu de Navegação -->
+    <nav>
+        <a href="#criar" onclick="showSection('criar')" id="nav-criar" class="active">Criar</a>
+        <a href="#atualizar" onclick="showSection('atualizar')" id="nav-atualizar">Atualizar</a>
+        <a href="#apagar" onclick="showSection('apagar')" id="nav-apagar">Apagar</a>
+        <a href="#buscar-titulo" onclick="showSection('buscar-titulo')" id="nav-buscar-titulo">Buscar por Título</a>
+        <a href="#buscar-id" onclick="showSection('buscar-id')" id="nav-buscar-id">Buscar por ID</a>
+        <a href="#listar" onclick="showSection('listar')" id="nav-listar">Listar Todos</a>
+    </nav>
+
+    <!-- Criar Produto -->
+    <div class="section active" id="criar">
+        <h2>Criar Produto</h2>
+        <input type="text" id="titulo-criar" placeholder="Título" required>
+        <textarea id="descricao-criar" placeholder="Descrição" required></textarea>
+        <input type="text" id="categoria-criar" placeholder="Categoria" required>
+        <input type="number" id="preco-criar" placeholder="Preço" step="0.01" required>
+        <input type="number" id="percentual-desconto-criar" placeholder="Percentual de Desconto" step="0.01" required>
+        <input type="number" id="estoque-criar" placeholder="Estoque" required>
+        <input type="text" id="marca-criar" placeholder="Marca" required>
+        <input type="text" id="imagem-criar" placeholder="URL da Imagem" required>
+        <button onclick="criarProduto()">Criar</button>
+        <div id="res-cadastrar-criar" class="res-cadastrar"></div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Descrição</th>
+                    <th>Categoria</th>
+                    <th>Preço</th>
+                    <th>Desconto (%)</th>
+                    <th>Estoque</th>
+                    <th>Marca</th>
+                    <th>Imagem</th>
+                </tr>
+            </thead>
+            <tbody id="tabela-criar"></tbody>
+        </table>
+    </div>
+
+    <!-- Atualizar Produto -->
+    <div class="section" id="atualizar">
+        <h2>Atualizar Produto</h2>
+        <input type="text" id="id-atualizar" placeholder="ID do Produto" required>
+        <input type="text" id="titulo-atualizar" placeholder="Título" required>
+        <textarea id="descricao-atualizar" placeholder="Descrição" required></textarea>
+        <input type="text" id="categoria-atualizar" placeholder="Categoria" required>
+        <input type="number" id="preco-atualizar" placeholder="Preço" step="0.01" required>
+        <input type="number" id="percentual-desconto-atualizar" placeholder="Percentual de Desconto" step="0.01"
+            required>
+        <input type="number" id="estoque-atualizar" placeholder="Estoque" required>
+        <input type="text" id="marca-atualizar" placeholder="Marca" required>
+        <input type="text" id="imagem-atualizar" placeholder="URL da Imagem" required>
+        <button onclick="atualizarProduto()">Atualizar</button>
+        <button onclick="limparFormularioAtualizar()" id="botao-cancelar" style="display: none;">Cancelar</button>
+        <div id="res-cadastrar-atualizar" class="res-cadastrar"></div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Descrição</th>
+                    <th>Categoria</th>
+                    <th>Preço</th>
+                    <th>Desconto (%)</th>
+                    <th>Estoque</th>
+                    <th>Marca</th>
+                    <th>Imagem</th>
+                </tr>
+            </thead>
+            <tbody id="tabela-atualizar"></tbody>
+        </table>
+    </div>
+
+    <!-- Apagar Produto -->
+    <div class="section" id="apagar">
+        <h2>Apagar Produto</h2>
+        <input type="text" id="id-apagar" placeholder="ID do Produto" required>
+        <button onclick="apagarProduto()">Apagar</button>
+        <div id="res-cadastrar-apagar" class="res-cadastrar"></div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Descrição</th>
+                    <th>Categoria</th>
+                    <th>Preço</th>
+                    <th>Desconto (%)</th>
+                    <th>Estoque</th>
+                    <th>Marca</th>
+                    <th>Imagem</th>
+                </tr>
+            </thead>
+            <tbody id="tabela-apagar"></tbody>
+        </table>
+    </div>
+
+    <!-- Buscar Produto por Título -->
+    <div class="section" id="buscar-titulo">
+        <h2>Buscar Produto por Título</h2>
+        <input type="text" id="busca-titulo" placeholder="Buscar por título">
+        <button onclick="buscarProdutosPorTitulo()">Buscar</button>
+        <div id="res-cadastrar-titulo" class="res-cadastrar"></div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Descrição</th>
+                    <th>Categoria</th>
+                    <th>Preço</th>
+                    <th>Desconto (%)</th>
+                    <th>Estoque</th>
+                    <th>Marca</th>
+                    <th>Imagem</th>
+                </tr>
+            </thead>
+            <tbody id="tabela-titulo"></tbody>
+        </table>
+    </div>
+
+    <!-- Buscar Produto por ID -->
+    <div class="section" id="buscar-id">
+        <h2>Buscar Produto por ID</h2>
+        <input type="text" id="busca-id" placeholder="Buscar por ID">
+        <button onclick="buscarProdutoPorId()">Buscar</button>
+        <div id="res-cadastrar-id" class="res-cadastrar"></div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Descrição</th>
+                    <th>Categoria</th>
+                    <th>Preço</th>
+                    <th>Desconto (%)</th>
+                    <th>Estoque</th>
+                    <th>Marca</th>
+                    <th>Imagem</th>
+                </tr>
+            </thead>
+            <tbody id="tabela-id"></tbody>
+        </table>
+    </div>
+
+    <!-- Listar Produtos -->
+    <div class="section" id="listar">
+        <h2>Lista de Produtos</h2>
+        <button onclick="listarProdutos()">Listar Todos</button>
+        <div id="res-cadastrar-lista" class="res-cadastrar"></div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Descrição</th>
+                    <th>Categoria</th>
+                    <th>Preço</th>
+                    <th>Desconto (%)</th>
+                    <th>Estoque</th>
+                    <th>Marca</th>
+                    <th>Imagem</th>
+                </tr>
+            </thead>
+            <tbody id="tabela-lista"></tbody>
+        </table>
+    </div>
+
+    <script>
+        // Função para mostrar apenas a seção selecionada
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('nav a').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+            document.getElementById(`nav-${sectionId}`).classList.add('active');
+        }
+
+        // Mostrar produtos na tabela
+        function mostrarProdutos(produtos, tabelaId, resultDivId) {
+            const tabela = document.getElementById(tabelaId);
+            const resultDiv = document.getElementById(resultDivId);
+            tabela.innerHTML = '';
+            const produtosArray = Array.isArray(produtos) ? produtos : [produtos];
+            if (produtosArray.length === 0) {
+                resultDiv.innerHTML = '<span class="error">Nenhum produto encontrado.</span>';
+                return;
+            }
+            produtosArray.forEach(produto => {
+                const linha = document.createElement('tr');
+                linha.innerHTML = `
+          <td>${produto.id || ''}</td>
+          <td>${produto.titulo || ''}</td>
+          <td>${produto.descricao || ''}</td>
+          <td>${produto.categoria || ''}</td>
+          <td>${produto.preco ? produto.preco.toFixed(2) : ''}</td>
+          <td>${produto.percentual_desconto ? produto.percentual_desconto.toFixed(2) : ''}</td>
+          <td>${produto.estoque || ''}</td>
+          <td>${produto.marca || ''}</td>
+          <td><a href="${produto.imagem || ''}" target="_blank">${produto.imagem || ''}</a></td>
+        `;
+                tabela.appendChild(linha);
+            });
+            resultDiv.innerHTML = 'Resultados exibidos.';
+        }
+
+        // Criar produto
+        function criarProduto() {
+            const titulo = document.getElementById('titulo-criar').value.trim();
+            const descricao = document.getElementById('descricao-criar').value.trim();
+            const categoria = document.getElementById('categoria-criar').value.trim();
+            const preco = document.getElementById('preco-criar').value;
+            const percentual_desconto = document.getElementById('percentual-desconto-criar').value;
+            const estoque = document.getElementById('estoque-criar').value;
+            const marca = document.getElementById('marca-criar').value.trim();
+            const imagem = document.getElementById('imagem-criar').value.trim();
+
+            if (!titulo || !descricao || !categoria || !preco || !percentual_desconto || !estoque || !marca || !imagem) {
+                document.getElementById('res-cadastrar-criar').innerHTML = `<span class="error">Preencha todos os campos! Campos ausentes: ${[
+                    !titulo && 'Título',
+                    !descricao && 'Descrição',
+                    !categoria && 'Categoria',
+                    !preco && 'Preço',
+                    !percentual_desconto && 'Percentual de Desconto',
+                    !estoque && 'Estoque',
+                    !marca && 'Marca',
+                    !imagem && 'Imagem'
+                ].filter(Boolean).join(', ')}</span>`;
+                return;
+            }
+
+            fetch('http://localhost:3000/produto', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    titulo,
+                    descricao,
+                    categoria,
+                    preco: parseFloat(preco),
+                    percentual_desconto: parseFloat(percentual_desconto),
+                    estoque: parseInt(estoque),
+                    marca,
+                    imagem
+                })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(error => {
+                            throw new Error(error.message || `Erro HTTP: ${response.status}`);
+                        });
+                    }
+                    return response.json();
+                })
+                .then(produto => {
+                    document.getElementById('res-cadastrar-criar').innerHTML = 'Produto criado!';
+                    document.getElementById('titulo-criar').value = '';
+                    document.getElementById('descricao-criar').value = '';
+                    document.getElementById('categoria-criar').value = '';
+                    document.getElementById('preco-criar').value = '';
+                    document.getElementById('percentual-desconto-criar').value = '';
+                    document.getElementById('estoque-criar').value = '';
+                    document.getElementById('marca-criar').value = '';
+                    document.getElementById('imagem-criar').value = '';
+                    mostrarProdutos([produto], 'tabela-criar', 'res-cadastrar-criar');
+                })
+                .catch(error => {
+                    console.error('Erro ao criar produto:', error);
+                    document.getElementById('res-cadastrar-criar').innerHTML = `<span class="error">Erro ao criar produto: ${error.message}</span>`;
+                });
+        }
+
+        // Atualizar produto
+        function atualizarProduto() {
+            const id = document.getElementById('id-atualizar').value.trim();
+            const titulo = document.getElementById('titulo-atualizar').value.trim();
+            const descricao = document.getElementById('descricao-atualizar').value.trim();
+            const categoria = document.getElementById('categoria-atualizar').value.trim();
+            const preco = document.getElementById('preco-atualizar').value;
+            const percentual_desconto = document.getElementById('percentual-desconto-atualizar').value;
+            const estoque = document.getElementById('estoque-atualizar').value;
+            const marca = document.getElementById('marca-atualizar').value.trim();
+            const imagem = document.getElementById('imagem-atualizar').value.trim();
+
+            console.log('Valores do formulário de atualização:', {
+                id, titulo, descricao, categoria, preco, percentual_desconto, estoque, marca, imagem
+            });
+
+            if (!id || !titulo || !descricao || !categoria || !preco || !percentual_desconto || !estoque || !marca || !imagem) {
+                document.getElementById('res-cadastrar-atualizar').innerHTML = `<span class="error">Preencha todos os campos! Campos ausentes: ${[
+                    !id && 'ID',
+                    !titulo && 'Título',
+                    !descricao && 'Descrição',
+                    !categoria && 'Categoria',
+                    !preco && 'Preço',
+                    !percentual_desconto && 'Percentual de Desconto',
+                    !estoque && 'Estoque',
+                    !marca && 'Marca',
+                    !imagem && 'Imagem'
+                ].filter(Boolean).join(', ')}</span>`;
+                return;
+            }
+
+            fetch(`http://localhost:3000/produto/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    titulo,
+                    descricao,
+                    categoria,
+                    preco: parseFloat(preco),
+                    percentual_desconto: parseFloat(percentual_desconto),
+                    estoque: parseInt(estoque),
+                    marca,
+                    imagem
+                })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(error => {
+                            throw new Error(error.message || `Erro HTTP: ${response.status}`);
+                        });
+                    }
+                    return response.json();
+                })
+                .then(produto => {
+                    document.getElementById('res-cadastrar-atualizar').innerHTML = 'Produto atualizado!';
+                    limparFormularioAtualizar();
+                    mostrarProdutos([produto], 'tabela-atualizar', 'res-cadastrar-atualizar');
+                })
+                .catch(error => {
+                    console.error('Erro ao atualizar produto:', error);
+                    document.getElementById('res-cadastrar-atualizar').innerHTML = `<span class="error">Erro ao atualizar produto: ${error.message}</span>`;
+                });
+        }
+
+        // Limpar formulário de atualização
+        function limparFormularioAtualizar() {
+            document.getElementById('id-atualizar').value = '';
+            document.getElementById('titulo-atualizar').value = '';
+            document.getElementById('descricao-atualizar').value = '';
+            document.getElementById('categoria-atualizar').value = '';
+            document.getElementById('preco-atualizar').value = '';
+            document.getElementById('percentual-desconto-atualizar').value = '';
+            document.getElementById('estoque-atualizar').value = '';
+            document.getElementById('marca-atualizar').value = '';
+            document.getElementById('imagem-atualizar').value = '';
+            document.getElementById('botao-cancelar').style.display = 'none';
+            document.getElementById('res-cadastrar-atualizar').innerHTML = '';
+            document.getElementById('tabela-atualizar').innerHTML = '';
+        }
+
+        // Apagar produto
+        function apagarProduto() {
+            const id = document.getElementById('id-apagar').value.trim();
+            if (!id) {
+                document.getElementById('res-cadastrar-apagar').innerHTML = '<span class="error">Digite um ID para apagar!</span>';
+                return;
+            }
+
+            // Validar se o ID é um número inteiro positivo
+            const idNumber = parseInt(id);
+            if (isNaN(idNumber) || idNumber <= 0) {
+                document.getElementById('res-cadastrar-apagar').innerHTML = '<span class="error">O ID deve ser um número inteiro positivo!</span>';
+                return;
+            }
+
+            console.log('Tentando apagar produto com ID:', idNumber);
+            console.log('Enviando DELETE para:', `http://localhost:3000/produto/${idNumber}`);
+
+            if (!confirm('Tem certeza que deseja apagar este produto?')) {
+                return;
+            }
+
+            fetch(`http://localhost:3000/produto/${idNumber}`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' }
+            })
+                .then(response => {
+                    console.log('Resposta do servidor:', {
+                        status: response.status,
+                        statusText: response.statusText,
+                        ok: response.ok
+                    });
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            let errorMessage;
+                            try {
+                                const error = JSON.parse(text);
+                                errorMessage = error.message || `Erro HTTP: ${response.status}`;
+                            } catch (e) {
+                                errorMessage = text || `Erro HTTP: ${response.status}`;
+                            }
+                            throw new Error(errorMessage);
+                        });
+                    }
+                    return response.text();
+                })
+                .then(text => {
+                    console.log('Resposta do corpo:', text || 'Nenhum conteúdo retornado');
+                    document.getElementById('res-cadastrar-apagar').innerHTML = 'Produto apagado com sucesso!';
+                    document.getElementById('id-apagar').value = '';
+                    document.getElementById('tabela-apagar').innerHTML = '';
+                })
+                .catch(error => {
+                    console.error('Erro ao apagar produto:', error);
+                    document.getElementById('res-cadastrar-apagar').innerHTML = `<span class="error">Erro ao apagar produto: ${error.message}</span>`;
+                });
+        }
+
+        // Buscar por título
+        function buscarProdutosPorTitulo() {
+            const titulo = document.getElementById('busca-titulo').value.trim();
+            if (!titulo) {
+                document.getElementById('res-cadastrar-titulo').innerHTML = '<span class="error">Digite um título para buscar!</span>';
+                return;
+            }
+            fetch(`http://localhost:3000/produto/titulo/${titulo}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Erro HTTP: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(produtos => {
+                    mostrarProdutos(produtos, 'tabela-titulo', 'res-cadastrar-titulo');
+                })
+                .catch(error => {
+                    console.error('Erro ao buscar por título:', error);
+                    document.getElementById('res-cadastrar-titulo').innerHTML = `<span class="error">Erro ao buscar produtos: ${error.message}</span>`;
+                });
+        }
+
+        // Buscar por ID
+        function buscarProdutoPorId() {
+            const id = document.getElementById('busca-id').value.trim();
+            if (!id) {
+                document.getElementById('res-cadastrar-id').innerHTML = '<span class="error">Digite um ID para buscar!</span>';
+                return;
+            }
+
+            const idNumber = parseInt(id);
+            if (isNaN(idNumber) || idNumber <= 0) {
+                document.getElementById('res-cadastrar-id').innerHTML = '<span class="error">O ID deve ser um número inteiro positivo!</span>';
+                return;
+            }
+
+            fetch(`http://localhost:3000/produto/id/${idNumber}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Produto não encontrado: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(produto => {
+                    mostrarProdutos([produto], 'tabela-id', 'res-cadastrar-id');
+                })
+                .catch(error => {
+                    console.error('Erro ao buscar por ID:', error);
+                    document.getElementById('res-cadastrar-id').innerHTML = `<span class="error">Erro ao buscar produto: ${error.message}</span>`;
+                });
+        }
+
+        // Listar todos os produtos
+        function listarProdutos() {
+            fetch('http://localhost:3000/produto')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Erro HTTP: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(produtos => {
+                    mostrarProdutos(produtos, 'tabela-lista', 'res-cadastrar-lista');
+                })
+                .catch(error => {
+                    console.error('Erro ao listar produtos:', error);
+                    document.getElementById('res-cadastrar-lista').innerHTML = `<span class="error">Erro ao carregar produtos: ${error.message}</span>`;
+                });
+        }
+
+        // Mostrar a seção "Criar" por padrão ao carregar a página
+        document.addEventListener('DOMContentLoaded', () => {
+            showSection('criar');
+        });
+    </script>
+</body>
+
+</html>

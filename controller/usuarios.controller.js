@@ -1,4 +1,5 @@
 const Usuario = require('../model/Usuarios')
+const sequelize = require('sequelize')
 
 const cadastrar = async (req, res) => {
     const dados = req.body
@@ -47,8 +48,6 @@ const buscarPorId = async (req, res) => {
     }
 }
 
-const { Op } = require('sequelize')
-
 const buscarPorNome = async (req, res) => {
     try {
         const nome = req.params.nome.toLowerCase();
@@ -70,10 +69,7 @@ const buscarPorNome = async (req, res) => {
         }
     } catch (err) {
         console.error('erro ao buscar por nome: ', err);
-        res.status(500).json({
-            message: 'erro ao buscar por nome.',
-            error: err
-        });
+        res.status(500).json({ message: 'erro ao buscar por nome.', err });
     }
 };
 
@@ -98,24 +94,25 @@ const apagar = async (req, res) => {
 
 
 const atualizar = async (req, res) => {
-    const atualizar = async (req, res) => {
-        try {
-            const id = req.params.id
-            const dados = req.body
+    const id = req.params.id
+    const dados = req.body
+    try {
 
+        const buscar = await Usuario.findByPk(id)
+
+        
+        
+        if (buscar) {
             const atualizado = await Usuario.update(dados, { where: { id } })
-
-            if (atualizado[0] > 0) {
-                console.log('dado atualizado com sucesso.')
-                res.status(200).json({ message: 'dado atualizado com sucesso.' })
-            } else {
-                console.log('dado não encontrado para atualizar.')
-                res.status(404).json({ message: 'dado não encontrado.' })
-            }
-        } catch (err) {
-            console.error('erro ao atualizar o dado: ', err)
-            res.status(500).json({ message: 'erro ao atualizar.', err })
+            res.status(200).json(atualizado)
+            console.log('dado atualizado com sucesso.')
+        } else {
+            console.log('dado não encontrado para atualizar.')
+            res.status(404).json({ message: 'dado não encontrado.' })
         }
+    } catch (err) {
+        console.error('erro ao atualizar o dado: ', err)
+        res.status(500).json({ message: 'erro ao atualizar.', err })
     }
 }
 

@@ -16,7 +16,7 @@ const cadastrar = async (req, res) => {
 const listar = async (req, res) => {
     try {
         const valores = await Compra.findAll()
-        if (!valores) {
+        if (valores) {
             console.log('dados listados com sucesso.');
             res.status(200).json(valores)
         } else {
@@ -50,24 +50,25 @@ const apagar = async (req, res) => {
 
 
 const atualizar = async (req, res) => {
-    const atualizar = async (req, res) => {
-        try {
-            const id = req.params.id
-            const dados = req.body
+    const id = req.params.id
+    const dados = req.body
+    
+    try {
+        const buscar = await Compra.findByPk(id)
 
+        console.log('dadsa')
+
+        if (buscar) {
             const atualizado = await Compra.update(dados, { where: { id } })
-
-            if (atualizado[0] > 0) {
-                console.log('dado atualizado com sucesso.')
-                res.status(200).json({ message: 'dado atualizado com sucesso.' })
-            } else {
-                console.log('dado não encontrado para atualizar.')
-                res.status(404).json({ message: 'dado não encontrado.' })
-            }
-        } catch (err) {
-            console.error('erro ao atualizar o dado: ', err)
-            res.status(500).json({ message: 'erro ao atualizar.', err })
+            console.log('dado atualizado com sucesso.')
+            res.status(200).json(atualizado)
+        } else {
+            console.log('dado não encontrado para atualizar.')
+            res.status(404).json({ message: 'dado não encontrado.' })
         }
+    } catch (err) {
+        console.error('erro ao atualizar o dado: ', err)
+        res.status(500).json({ message: 'erro ao atualizar.', err })
     }
 }
 

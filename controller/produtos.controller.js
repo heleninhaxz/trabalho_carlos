@@ -16,7 +16,7 @@ const cadastrar = async (req, res) => {
 const listar = async (req, res) => {
     try {
         const valores = await Produto.findAll()
-        if (!valores) {
+        if (valores) {
             console.log('dados listados com sucesso.');
             res.status(200).json(valores)
         } else {
@@ -47,32 +47,33 @@ const buscarPorId = async (req, res) => {
     }
 }
 
-const { Op } = require('sequelize') 
+const { Op, fn, col, where } = require('sequelize');
 
-const buscarPorNome = async (req, res) => {
+const buscarPorTitulo = async (req, res) => {
+    const titulo = req.params.titulo.toLowerCase();
+
     try {
-        const nome = req.params.nome
-
         const resultados = await Produto.findAll({
-            where: {
-                nome: {
-                    [Op.like]: `%${nome}%`
+            where: where(
+                fn('LOWER', col('titulo')),
+                {
+                    [Op.like]: `%${titulo}%`
                 }
-            }
-        })
+            )
+        });
 
         if (resultados.length > 0) {
-            console.log('dados encontrados com sucesso.')
-            res.status(200).json(resultados)
+            console.log('dados encontrados com sucesso.');
+            res.status(200).json(resultados);
         } else {
-            console.log('nenhum dado encontrado com esse nome.')
-            res.status(404).json({ message: 'nenhum dado encontrado.' })
+            console.log('nenhum dado encontrado com esse titulo.');
+            res.status(404).json({ message: 'nenhum dado encontrado.' });
         }
     } catch (err) {
-        console.error('erro ao buscar por nome: ', err)
-        res.status(500).json({ message: 'erro ao buscar por nome.', err })
+        console.error('erro ao buscar por titulo: ', err.message || err);
+        res.status(500).json({ message: 'erro ao buscar por titulo.', error: err.message || err });
     }
-}
+};
 
 const apagar = async (req, res) => {
     const id = req.params.id
@@ -95,25 +96,24 @@ const apagar = async (req, res) => {
 
 
 const atualizar = async (req, res) => {
-    const atualizar = async (req, res) => {
-        try {
-            const id = req.params.id
-            const dados = req.body
+    const id = req.params.id
+    const dados = req.body
 
+    try {
+        const buscar = await Produto.findByPk(id)
+        
+        if (buscar) {
             const atualizado = await Produto.update(dados, { where: { id } })
-
-            if (atualizado[0] > 0) {
-                console.log('dado atualizado com sucesso.')
-                res.status(200).json({ message: 'dado atualizado com sucesso.' })
-            } else {
-                console.log('dado não encontrado para atualizar.')
-                res.status(404).json({ message: 'dado não encontrado.' })
-            }
-        } catch (err) {
-            console.error('erro ao atualizar o dado: ', err)
-            res.status(500).json({ message: 'erro ao atualizar.', err })
+            console.log('dado atualizado com sucesso.')
+            res.status(200).json(atualizado)
+        } else {
+            console.log('dado não encontrado para atualizar.')
+            res.status(404).json({ message: 'dado não encontrado.' })
         }
+    } catch (err) {
+        console.error('erro ao atualizar o dado: ', err)
+        res.status(500).json({ message: 'erro ao atualizar.', err })
     }
 }
 
-module.exports = { cadastrar, listar, buscarPorId, buscarPorNome, apagar, atualizar }
+module.exports = { cadastrar, listar, buscarPorId, buscarPorTitulo, apagar, atualizar }

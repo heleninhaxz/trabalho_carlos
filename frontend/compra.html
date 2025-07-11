@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gerenciador de Compras</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1,
+        h2 {
+            text-align: center;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: none;
+            /* Hide sections by default */
+        }
+
+        .section.active {
+            display: block;
+            /* Show only the active section */
+        }
+
+        input,
+        select {
+            padding: 5px;
+            margin: 5px;
+            width: 200px;
+        }
+
+        button {
+            padding: 5px 10px;
+            margin: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 5px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f0f0f0;
+        }
+
+        .res-cadastrar {
+            margin-top: 10px;
+            color: green;
+        }
+
+        .error {
+            color: red;
+        }
+
+        nav {
+            background-color: #f0f0f0;
+            padding: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        nav a:hover {
+            color: #007bff;
+        }
+
+        nav a.active {
+            color: #007bff;
+            border-bottom: 2px solid #007bff;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header de navegação -->
+    <header style="background:#f0f0f0; padding:15px; text-align:center; margin-bottom:20px;">
+        <a href="index.html" style="margin:0 15px; text-decoration:none; color:#333; font-weight:bold;">Início</a>
+        <a href="usuario.html" style="margin:0 15px; text-decoration:none; color:#333; font-weight:bold;">Usuários</a>
+        <a href="produto.html" style="margin:0 15px; text-decoration:none; color:#333; font-weight:bold;">Produtos</a>
+        <a href="compra.html" style="margin:0 15px; text-decoration:none; color:#333; font-weight:bold;">Compras</a>
+    </header>
+
+    <h1>Gerenciador de Compras</h1>
+
+    <!-- Menu de Navegação -->
+    <nav>
+        <a href="#criar" onclick="showSection('criar')" id="nav-criar" class="active">Criar</a>
+        <a href="#atualizar" onclick="showSection('atualizar')" id="nav-atualizar">Atualizar</a>
+        <a href="#apagar" onclick="showSection('apagar')" id="nav-apagar">Apagar</a>
+        <a href="#listar" onclick="showSection('listar')" id="nav-listar">Listar Todos</a>
+    </nav>
+
+    <!-- Criar Compra -->
+    <div class="section active" id="criar">
+        <h2>Criar Compra</h2>
+        <input type="number" id="usuario-id-criar" placeholder="ID do Usuário" required>
+        <input type="number" id="produto-id-criar" placeholder="ID do Produto" required>
+        <input type="number" id="quantidade-criar" placeholder="Quantidade" required>
+        <input type="date" id="data-compra-criar" placeholder="Data da Compra" required>
+        <input type="number" id="preco-unitario-criar" placeholder="Preço Unitário" step="0.01" required>
+        <input type="number" id="desconto-aplicado-criar" placeholder="Desconto Aplicado" step="0.01" required>
+        <input type="number" id="preco-final-criar" placeholder="Preço Final" step="0.01" required>
+        <select id="forma-pagamento-criar" required>
+            <option value="" disabled selected>Selecione a Forma de Pagamento</option>
+            <option value="Cartão de Crédito">Cartão de Crédito</option>
+            <option value="Cartão de Débito">Cartão de Débito</option>
+            <option value="Boleto">Boleto</option>
+            <option value="Pix">Pix</option>
+        </select>
+        <select id="status-compra-criar" required>
+            <option value="" disabled selected>Selecione o Status da Compra</option>
+            <option value="Pendente">Pendente</option>
+            <option value="Concluída">Concluída</option>
+            <option value="Cancelada">Cancelada</option>
+        </select>
+        <button onclick="criarCompra()">Criar</button>
+        <div id="res-cadastrar-criar" class="res-cadastrar"></div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Usuário ID</th>
+                    <th>Produto ID</th>
+                    <th>Quantidade</th>
+                    <th>Data da Compra</th>
+                    <th>Preço Unitário</th>
+                    <th>Desconto Aplicado</th>
+                    <th>Preço Final</th>
+                    <th>Forma de Pagamento</th>
+                    <th>Status da Compra</th>
+                </tr>
+            </thead>
+            <tbody id="tabela-criar"></tbody>
+        </table>
+    </div>
+
+    <!-- Atualizar Compra -->
+    <div class="section" id="atualizar">
+        <h2>Atualizar Compra</h2>
+        <input type="text" id="id-atualizar" placeholder="ID da Compra" required>
+        <input type="number" id="usuario-id-atualizar" placeholder="ID do Usuário" required>
+        <input type="number" id="produto-id-atualizar" placeholder="ID do Produto" required>
+        <input type="number" id="quantidade-atualizar" placeholder="Quantidade" required>
+        <input type="date" id="data-compra-atualizar" placeholder="Data da Compra" required>
+        <input type="number" id="preco-unitario-atualizar" placeholder="Preço Unitário" step="0.01" required>
+        <input type="number" id="desconto-aplicado-atualizar" placeholder="Desconto Aplicado" step="0.01" required>
+        <input type="number" id="preco-final-atualizar" placeholder="Preço Final" step="0.01" required>
+        <select id="forma-pagamento-atualizar" required>
+            <option value="" disabled selected>Selecione a Forma de Pagamento</option>
+            <option value="Cartão de Crédito">Cartão de Crédito</option>
+            <option value="Cartão de Débito">Cartão de Débito</option>
+            <option value="Boleto">Boleto</option>
+            <option value="Pix">Pix</option>
+        </select>
+        <select id="status-compra-atualizar" required>
+            <option value="" disabled selected>Selecione o Status da Compra</option>
+            <option value="Pendente">Pendente</option>
+            <option value="Concluída">Concluída</option>
+            <option value="Cancelada">Cancelada</option>
+        </select>
+        <button onclick="atualizarCompra()">Atualizar</button>
+        <button onclick="limparFormularioAtualizar()" id="botao-cancelar" style="display: none;">Cancelar</button>
+        <div id="res-cadastrar-atualizar" class="res-cadastrar"></div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Usuário ID</th>
+                    <th>Produto ID</th>
+                    <th>Quantidade</th>
+                    <th>Data da Compra</th>
+                    <th>Preço Unitário</th>
+                    <th>Desconto Aplicado</th>
+                    <th>Preço Final</th>
+                    <th>Forma de Pagamento</th>
+                    <th>Status da Compra</th>
+                </tr>
+            </thead>
+            <tbody id="tabela-atualizar"></tbody>
+        </table>
+    </div>
+
+    <!-- Apagar Compra -->
+    <div class="section" id="apagar">
+        <h2>Apagar Compra</h2>
+        <input type="text" id="id-apagar" placeholder="ID da Compra" required>
+        <button onclick="apagarCompra()">Apagar</button>
+        <div id="res-cadastrar-apagar" class="res-cadastrar"></div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Usuário ID</th>
+                    <th>Produto ID</th>
+                    <th>Quantidade</th>
+                    <th>Data da Compra</th>
+                    <th>Preço Unitário</th>
+                    <th>Desconto Aplicado</th>
+                    <th>Preço Final</th>
+                    <th>Forma de Pagamento</th>
+                    <th>Status da Compra</th>
+                </tr>
+            </thead>
+            <tbody id="tabela-apagar"></tbody>
+        </table>
+    </div>
+
+    <!-- Listar Compras -->
+    <div class="section" id="listar">
+        <h2>Lista de Compras</h2>
+        <button onclick="listarCompras()">Listar Todos</button>
+        <div id="res-cadastrar-lista" class="res-cadastrar"></div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Usuário ID</th>
+                    <th>Produto ID</th>
+                    <th>Quantidade</th>
+                    <th>Data da Compra</th>
+                    <th>Preço Unitário</th>
+                    <th>Desconto Aplicado</th>
+                    <th>Preço Final</th>
+                    <th>Forma de Pagamento</th>
+                    <th>Status da Compra</th>
+                </tr>
+            </thead>
+            <tbody id="tabela-lista"></tbody>
+        </table>
+    </div>
+
+    <script>
+        // Função para mostrar apenas a seção selecionada
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('nav a').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+            document.getElementById(`nav-${sectionId}`).classList.add('active');
+        }
+
+        // Mostrar compras na tabela
+        function mostrarCompras(compras, tabelaId, resultDivId) {
+            const tabela = document.getElementById(tabelaId);
+            const resultDiv = document.getElementById(resultDivId);
+            tabela.innerHTML = '';
+            const comprasArray = Array.isArray(compras) ? compras : [compras];
+            if (comprasArray.length === 0) {
+                resultDiv.innerHTML = '<span class="error">Nenhuma compra encontrada.</span>';
+                return;
+            }
+            comprasArray.forEach(compra => {
+                const linha = document.createElement('tr');
+                linha.innerHTML = `
+          <td>${compra.id || ''}</td>
+          <td>${compra.usuario_id || ''}</td>
+          <td>${compra.produto_id || ''}</td>
+          <td>${compra.quantidade || ''}</td>
+          <td>${compra.data_compra ? new Date(compra.data_compra).toLocaleDateString('pt-BR') : ''}</td>
+          <td>${compra.preco_unitario ? compra.preco_unitario.toFixed(2) : ''}</td>
+          <td>${compra.desconto_aplicado ? compra.desconto_aplicado.toFixed(2) : ''}</td>
+          <td>${compra.preco_final ? compra.preco_final.toFixed(2) : ''}</td>
+          <td>${compra.forma_pagamento || ''}</td>
+          <td>${compra.status_compra || ''}</td>
+        `;
+                tabela.appendChild(linha);
+            });
+            resultDiv.innerHTML = 'Resultados exibidos.';
+        }
+
+        // Criar compra
+        function criarCompra() {
+            const usuario_id = document.getElementById('usuario-id-criar').value;
+            const produto_id = document.getElementById('produto-id-criar').value;
+            const quantidade = document.getElementById('quantidade-criar').value;
+            const data_compra = document.getElementById('data-compra-criar').value;
+            const preco_unitario = document.getElementById('preco-unitario-criar').value;
+            const desconto_aplicado = document.getElementById('desconto-aplicado-criar').value;
+            const preco_final = document.getElementById('preco-final-criar').value;
+            const forma_pagamento = document.getElementById('forma-pagamento-criar').value;
+            const status_compra = document.getElementById('status-compra-criar').value;
+
+            if (!usuario_id || !produto_id || !quantidade || !data_compra || !preco_unitario || !desconto_aplicado || !preco_final || !forma_pagamento || !status_compra) {
+                document.getElementById('res-cadastrar-criar').innerHTML = `<span class="error">Preencha todos os campos! Campos ausentes: ${[
+                    !usuario_id && 'ID do Usuário',
+                    !produto_id && 'ID do Produto',
+                    !quantidade && 'Quantidade',
+                    !data_compra && 'Data da Compra',
+                    !preco_unitario && 'Preço Unitário',
+                    !desconto_aplicado && 'Desconto Aplicado',
+                    !preco_final && 'Preço Final',
+                    !forma_pagamento && 'Forma de Pagamento',
+                    !status_compra && 'Status da Compra'
+                ].filter(Boolean).join(', ')}</span>`;
+                return;
+            }
+
+            const usuarioIdNumber = parseInt(usuario_id);
+            const produtoIdNumber = parseInt(produto_id);
+            const quantidadeNumber = parseInt(quantidade);
+            if (isNaN(usuarioIdNumber) || usuarioIdNumber <= 0 || isNaN(produtoIdNumber) || produtoIdNumber <= 0 || isNaN(quantidadeNumber) || quantidadeNumber <= 0) {
+                document.getElementById('res-cadastrar-criar').innerHTML = '<span class="error">ID do Usuário, ID do Produto e Quantidade devem ser números inteiros positivos!</span>';
+                return;
+            }
+
+            fetch('http://localhost:3000/compra', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    usuario_id: usuarioIdNumber,
+                    produto_id: produtoIdNumber,
+                    quantidade: quantidadeNumber,
+                    data_compra,
+                    preco_unitario: parseFloat(preco_unitario),
+                    desconto_aplicado: parseFloat(desconto_aplicado),
+                    preco_final: parseFloat(preco_final),
+                    forma_pagamento,
+                    status_compra
+                })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(error => {
+                            throw new Error(error.message || `Erro HTTP: ${response.status}`);
+                        });
+                    }
+                    return response.json();
+                })
+                .then(compra => {
+                    document.getElementById('res-cadastrar-criar').innerHTML = 'Compra criada!';
+                    document.getElementById('usuario-id-criar').value = '';
+                    document.getElementById('produto-id-criar').value = '';
+                    document.getElementById('quantidade-criar').value = '';
+                    document.getElementById('data-compra-criar').value = '';
+                    document.getElementById('preco-unitario-criar').value = '';
+                    document.getElementById('desconto-aplicado-criar').value = '';
+                    document.getElementById('preco-final-criar').value = '';
+                    document.getElementById('forma-pagamento-criar').value = '';
+                    document.getElementById('status-compra-criar').value = '';
+                    mostrarCompras([compra], 'tabela-criar', 'res-cadastrar-criar');
+                })
+                .catch(error => {
+                    console.error('Erro ao criar compra:', error);
+                    document.getElementById('res-cadastrar-criar').innerHTML = `<span class="error">Erro ao criar compra: ${error.message}</span>`;
+                });
+        }
+
+        // Atualizar compra
+        function atualizarCompra() {
+            const id = document.getElementById('id-atualizar').value.trim();
+            const usuario_id = document.getElementById('usuario-id-atualizar').value;
+            const produto_id = document.getElementById('produto-id-atualizar').value;
+            const quantidade = document.getElementById('quantidade-atualizar').value;
+            const data_compra = document.getElementById('data-compra-atualizar').value;
+            const preco_unitario = document.getElementById('preco-unitario-atualizar').value;
+            const desconto_aplicado = document.getElementById('desconto-aplicado-atualizar').value;
+            const preco_final = document.getElementById('preco-final-atualizar').value;
+            const forma_pagamento = document.getElementById('forma-pagamento-atualizar').value;
+            const status_compra = document.getElementById('status-compra-atualizar').value;
+
+            console.log('Valores do formulário de atualização:', {
+                id, usuario_id, produto_id, quantidade, data_compra, preco_unitario, desconto_aplicado, preco_final, forma_pagamento, status_compra
+            });
+
+            if (!id || !usuario_id || !produto_id || !quantidade || !data_compra || !preco_unitario || !desconto_aplicado || !preco_final || !forma_pagamento || !status_compra) {
+                document.getElementById('res-cadastrar-atualizar').innerHTML = `<span class="error">Preencha todos os campos! Campos ausentes: ${[
+                    !id && 'ID',
+                    !usuario_id && 'ID do Usuário',
+                    !produto_id && 'ID do Produto',
+                    !quantidade && 'Quantidade',
+                    !data_compra && 'Data da Compra',
+                    !preco_unitario && 'Preço Unitário',
+                    !desconto_aplicado && 'Desconto Aplicado',
+                    !preco_final && 'Preço Final',
+                    !forma_pagamento && 'Forma de Pagamento',
+                    !status_compra && 'Status da Compra'
+                ].filter(Boolean).join(', ')}</span>`;
+                return;
+            }
+
+            const idNumber = parseInt(id);
+            const usuarioIdNumber = parseInt(usuario_id);
+            const produtoIdNumber = parseInt(produto_id);
+            const quantidadeNumber = parseInt(quantidade);
+            if (isNaN(idNumber) || idNumber <= 0 || isNaN(usuarioIdNumber) || usuarioIdNumber <= 0 || isNaN(produtoIdNumber) || produtoIdNumber <= 0 || isNaN(quantidadeNumber) || quantidadeNumber <= 0) {
+                document.getElementById('res-cadastrar-atualizar').innerHTML = '<span class="error">ID, ID do Usuário, ID do Produto e Quantidade devem ser números inteiros positivos!</span>';
+                return;
+            }
+
+            fetch(`http://localhost:3000/compra/${idNumber}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    usuario_id: usuarioIdNumber,
+                    produto_id: produtoIdNumber,
+                    quantidade: quantidadeNumber,
+                    data_compra,
+                    preco_unitario: parseFloat(preco_unitario),
+                    desconto_aplicado: parseFloat(desconto_aplicado),
+                    preco_final: parseFloat(preco_final),
+                    forma_pagamento,
+                    status_compra
+                })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(error => {
+                            throw new Error(error.message || `Erro HTTP: ${response.status}`);
+                        });
+                    }
+                    return response.json();
+                })
+                .then(compra => {
+                    document.getElementById('res-cadastrar-atualizar').innerHTML = 'Compra atualizada!';
+                    limparFormularioAtualizar();
+                    mostrarCompras([compra], 'tabela-atualizar', 'res-cadastrar-atualizar');
+                })
+                .catch(error => {
+                    console.error('Erro ao atualizar compra:', error);
+                    document.getElementById('res-cadastrar-atualizar').innerHTML = `<span class="error">Erro ao atualizar compra: ${error.message}</span>`;
+                });
+        }
+
+        // Limpar formulário de atualização
+        function limparFormularioAtualizar() {
+            document.getElementById('id-atualizar').value = '';
+            document.getElementById('usuario-id-atualizar').value = '';
+            document.getElementById('produto-id-atualizar').value = '';
+            document.getElementById('quantidade-atualizar').value = '';
+            document.getElementById('data-compra-atualizar').value = '';
+            document.getElementById('preco-unitario-atualizar').value = '';
+            document.getElementById('desconto-aplicado-atualizar').value = '';
+            document.getElementById('preco-final-atualizar').value = '';
+            document.getElementById('forma-pagamento-atualizar').value = '';
+            document.getElementById('status-compra-atualizar').value = '';
+            document.getElementById('botao-cancelar').style.display = 'none';
+            document.getElementById('res-cadastrar-atualizar').innerHTML = '';
+            document.getElementById('tabela-atualizar').innerHTML = '';
+        }
+
+        // Apagar compra
+        function apagarCompra() {
+            const id = document.getElementById('id-apagar').value.trim();
+            if (!id) {
+                document.getElementById('res-cadastrar-apagar').innerHTML = '<span class="error">Digite um ID para apagar!</span>';
+                return;
+            }
+
+            const idNumber = parseInt(id);
+            if (isNaN(idNumber) || idNumber <= 0) {
+                document.getElementById('res-cadastrar-apagar').innerHTML = '<span class="error">O ID deve ser um número inteiro positivo!</span>';
+                return;
+            }
+
+            console.log('Tentando apagar compra com ID:', idNumber);
+            console.log('Enviando DELETE para:', `http://localhost:3000/compra/${idNumber}`);
+
+            if (!confirm('Tem certeza que deseja apagar esta compra?')) {
+                return;
+            }
+
+            fetch(`http://localhost:3000/compra/${idNumber}`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' }
+            })
+                .then(response => {
+                    console.log('Resposta do servidor:', {
+                        status: response.status,
+                        statusText: response.statusText,
+                        ok: response.ok
+                    });
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            let errorMessage;
+                            try {
+                                const error = JSON.parse(text);
+                                errorMessage = error.message || `Erro HTTP: ${response.status}`;
+                            } catch (e) {
+                                errorMessage = text || `Erro HTTP: ${response.status}`;
+                            }
+                            throw new Error(errorMessage);
+                        });
+                    }
+                    return response.text();
+                })
+                .then(text => {
+                    console.log('Resposta do corpo:', text || 'Nenhum conteúdo retornado');
+                    document.getElementById('res-cadastrar-apagar').innerHTML = 'Compra apagada com sucesso!';
+                    document.getElementById('id-apagar').value = '';
+                    document.getElementById('tabela-apagar').innerHTML = '';
+                })
+                .catch(error => {
+                    console.error('Erro ao apagar compra:', error);
+                    document.getElementById('res-cadastrar-apagar').innerHTML = `<span class="error">Erro ao apagar compra: ${error.message}</span>`;
+                });
+        }
+
+        // Listar todas as compras
+        function listarCompras() {
+            fetch('http://localhost:3000/compra')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Erro HTTP: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(compras => {
+                    mostrarCompras(compras, 'tabela-lista', 'res-cadastrar-lista');
+                })
+                .catch(error => {
+                    console.error('Erro ao listar compras:', error);
+                    document.getElementById('res-cadastrar-lista').innerHTML = `<span class="error">Erro ao carregar compras: ${error.message}</span>`;
+                });
+        }
+
+        // Mostrar a seção "Criar" por padrão ao carregar a página
+        document.addEventListener('DOMContentLoaded', () => {
+            showSection('criar');
+        });
+    </script>
+</body>
+
+</html>
