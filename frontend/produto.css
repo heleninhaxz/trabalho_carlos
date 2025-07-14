@@ -1,0 +1,94 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+h1,
+h2 {
+    text-align: center;
+}
+
+.section {
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: none;
+    /* Hide sections by default */
+}
+
+.section.active {
+    display: block;
+    /* Show only the active section */
+}
+
+input,
+textarea {
+    padding: 5px;
+    margin: 5px;
+    width: 200px;
+}
+
+textarea {
+    height: 100px;
+    vertical-align: top;
+}
+
+button {
+    padding: 5px 10px;
+    margin: 5px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th,
+td {
+    border: 1px solid black;
+    padding: 5px;
+    text-align: left;
+}
+
+th {
+    background-color: #f0f0f0;
+}
+
+.res-cadastrar {
+    margin-top: 10px;
+    color: green;
+}
+
+.error {
+    color: red;
+}
+
+nav {
+    background-color: #f0f0f0;
+    padding: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+nav a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+nav a:hover {
+    color: #007bff;
+}
+
+nav a.active {
+    color: #007bff;
+    border-bottom: 2px solid #007bff;
+}
+
+html {
+    scroll-behavior: smooth;
+}

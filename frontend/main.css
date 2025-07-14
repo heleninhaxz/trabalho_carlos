@@ -1,0 +1,32 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 40px;
+    background: #f9f9f9;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.menu {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.menu a {
+    padding: 20px 40px;
+    background: #e0e0e0;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    font-size: 1.2em;
+    transition: background 0.2s;
+}
+
+.menu a:hover {
+    background: #bdbdbd;
+}
