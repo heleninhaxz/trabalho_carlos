@@ -9,7 +9,7 @@ const cadastrar = async (req, res) => {
         res.status(201).json(valores)
     } catch (err) {
         console.error('erro ao cadastrar os dados ', err);
-        res.status(500).json({ message: 'erro ao cadastrar.', err })
+        res.status(500).json({ message: 'erro ao cadastrar.'+err.message })
     }
 }
 

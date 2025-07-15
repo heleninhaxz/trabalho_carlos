@@ -1,0 +1,13 @@
+.section {
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: none;
+    /* Hide sections by default */
+}
+
+.section.active {
+    display: block;
+    /* Show only the active section */
+}
