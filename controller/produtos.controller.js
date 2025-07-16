@@ -47,19 +47,18 @@ const buscarPorId = async (req, res) => {
     }
 }
 
-const { Op, fn, col, where } = require('sequelize');
+const sequelize = require('sequelize');
 
 const buscarPorTitulo = async (req, res) => {
     const titulo = req.params.titulo.toLowerCase();
 
     try {
         const resultados = await Produto.findAll({
-            where: where(
-                fn('LOWER', col('titulo')),
-                {
-                    [Op.like]: `%${titulo}%`
+            where: {
+                titulo: {
+                    [sequelize.Op.like]: `%${titulo}%`
                 }
-            )
+            }
         });
 
         if (resultados.length > 0) {
