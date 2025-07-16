@@ -1,5 +1,4 @@
 const Usuario = require('../model/Usuarios')
-const sequelize = require('sequelize')
 
 const cadastrar = async (req, res) => {
     const dados = req.body
@@ -48,13 +47,15 @@ const buscarPorId = async (req, res) => {
     }
 }
 
+const { Op, fn, col, where } = require('sequelize')
+
 const buscarPorNome = async (req, res) => {
     try {
         const nome = req.params.nome.toLowerCase();
 
         const resultados = await Usuario.findAll({
-            where: sequelize.where(
-                sequelize.fn('LOWER', sequelize.col('nome')),
+            where: where(
+                fn('LOWER', col('nome')),
                 'LIKE',
                 `%${nome}%`
             )
@@ -77,9 +78,10 @@ const apagar = async (req, res) => {
     const id = req.params.id
 
     try {
-        const deletado = await Usuario.destroy({ where: { id } })
+        const buscar = await Usuario.findByPk(id)
 
-        if (deletado) {
+        if (buscar) {
+            await Usuario.destroy({ where: { id } })
             console.log('dado apagado com sucesso.')
             res.status(200).json({ message: 'dado apagado com sucesso.' })
         } else {
@@ -97,10 +99,7 @@ const atualizar = async (req, res) => {
     const id = req.params.id
     const dados = req.body
     try {
-
         const buscar = await Usuario.findByPk(id)
-
-        
         
         if (buscar) {
             const atualizado = await Usuario.update(dados, { where: { id } })

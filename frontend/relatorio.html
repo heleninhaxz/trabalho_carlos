@@ -1,29 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="relatorio.css">
+    <meta charset="UTF-8" />
+    <title>Relatórios Gerenciais</title>
+    <link rel="stylesheet" href="relatorio.css" />
     <script src="relatorio.js" defer></script>
+    <link rel="stylesheet" href="relatorio.css">
 </head>
 
 <body>
-    <header style="background:#f0f0f0; padding:15px; text-align:center; margin-bottom:20px;">
-        <a href="index.html" style="margin:0 15px; text-decoration:none; color:#333; font-weight:bold;">Início</a>
-        <a href="usuario.html" style="margin:0 15px; text-decoration:none; color:#333; font-weight:bold;">Usuários</a>
-        <a href="produto.html" style="margin:0 15px; text-decoration:none; color:#333; font-weight:bold;">Produtos</a>
-        <a href="compra.html" style="margin:0 15px; text-decoration:none; color:#333; font-weight:bold;">Compras</a>
-        <a href="grafico.html" style="margin:0 15px; text-decoration:none; color:#333; font-weight:bold;">Gráficos</a>
-        <a href="api.html" style="margin:0 15px; text-decoration:none; color:#333; font-weight:bold;">API</a>
-        <a href="relatorio.html"
-            style="margin:0 15px; text-decoration:none; color:#333; font-weight:bold;">Relatórios</a>
+    <header>
+        <a href="index.html">Início</a>
+        <a href="usuario.html">Usuários</a>
+        <a href="produto.html">Produtos</a>
+        <a href="compra.html">Compras</a>
+        <a href="grafico.html">Gráficos</a>
+        <a href="api.html">API</a>
+        <a href="relatorio.html">Relatórios</a>
     </header>
 
     <h1>Relatórios Gerenciais</h1>
 
-    <!-- Menu de Navegação -->
     <nav>
         <a href="#usuario" onclick="showSection('usuario')" id="nav-usuario" class="active">Usuário</a>
         <a href="#produto" onclick="showSection('produto')" id="nav-produto">Produto</a>
@@ -33,31 +31,29 @@
         <a href="#consolidado" onclick="showSection('consolidado')" id="nav-consolidado">Consolidado Todos</a>
     </nav>
 
-    <!-- Seção Usuário -->
     <div class="section active" id="usuario">
         <button onclick="mostrarUsuarios()">Gerar Tabela de Usuários</button>
         <div id="tabela-usuario"></div>
     </div>
 
-    <!-- Seção Produto -->
     <div class="section" id="produto">
         <button onclick="mostrarProdutos()">Gerar Tabela de Produtos</button>
         <div id="tabela-produto"></div>
     </div>
 
-    <!-- Seção Compra -->
     <div class="section" id="compra">
         <button onclick="mostrarCompras()">Gerar Tabela de Compras</button>
         <div id="tabela-compra"></div>
     </div>
 
-
     <div class="section" id="estoque-critico">
-
+        <button onclick="mostrarEstoqueCritico()">Gerar Tabela de Estoque Crítico</button>
+        <div id="tabela-estoque"></div>
     </div>
 
     <div class="section" id="consolidado">
-
+        <button onclick="mostrarRelatorioConsolidado()">Gerar Relatório Consolidado</button>
+        <div id="tabela-consolidado"></div>
     </div>
 </body>
 

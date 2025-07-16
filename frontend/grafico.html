@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
     <title>Gráficos</title>
-    <link rel="stylesheet" href="grafico.css">
-    <script src="grafico.js" defer></script>
+    <link rel="stylesheet" href="grafico.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="grafico.js" defer></script>
 </head>
 
 <body>
@@ -17,15 +16,22 @@
         <a href="produto.html" style="margin:0 15px; text-decoration:none; color:#333; font-weight:bold;">Produtos</a>
         <a href="compra.html" style="margin:0 15px; text-decoration:none; color:#333; font-weight:bold;">Compras</a>
         <a href="grafico.html" style="margin:0 15px; text-decoration:none; color:#333; font-weight:bold;">Gráficos</a>
+        <a href="api.html" style="margin:0 15px; text-decoration:none; color:#333; font-weight:bold;">API</a>
+        <a href="relatorio.html" style="margin:0 15px; text-decoration:none; color:#333; font-weight:bold;">Relatórios</a>
     </header>
 
     <h1>Gráficos do Sistema</h1>
-    <input type="text" placeholder="começo" id="start">
-    <input type="text" placeholder="final" id="end">
-    <button id="gerar">Gerar</button>
-    <canvas id="line-chart" width="400" height="300"></canvas>
-    <br>
-    <canvas id="line-chart2" width="400" height="300"></canvas>
+
+    <div style="text-align:center; margin-bottom: 20px;">
+        <input type="text" id="start" placeholder="Início" style="padding:5px; margin:5px; width:100px;" />
+        <input type="text" id="end" placeholder="Fim" style="padding:5px; margin:5px; width:100px;" />
+        <button id="gerar" style="padding:5px 10px; margin:5px;">Gerar</button>
+    </div>
+
+    <div style="max-width:600px; margin: 0 auto;">
+        <canvas id="line-chart" width="400" height="300" style="margin-bottom:40px;"></canvas>
+        <canvas id="line-chart2" width="400" height="300"></canvas>
+    </div>
 </body>
 
 </html>

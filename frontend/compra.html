@@ -15,6 +15,9 @@
         <a href="usuario.html" style="margin:0 15px; text-decoration:none; color:#333; font-weight:bold;">Usuários</a>
         <a href="produto.html" style="margin:0 15px; text-decoration:none; color:#333; font-weight:bold;">Produtos</a>
         <a href="compra.html" style="margin:0 15px; text-decoration:none; color:#333; font-weight:bold;">Compras</a>
+        <a href="grafico.html" style="margin:0 15px; text-decoration:none; color:#333; font-weight:bold;">Gráficos</a>
+        <a href="api.html" style="margin:0 15px; text-decoration:none; color:#333; font-weight:bold;">API</a>
+        <a href="relatorio.html" style="margin:0 15px; text-decoration:none; color:#333; font-weight:bold;">Relatórios</a>
     </header>
 
     <h1>Gerenciador de Compras</h1>
@@ -37,19 +40,10 @@
         <input type="number" id="preco-unitario-criar" placeholder="Preço Unitário" step="0.01" required>
         <input type="number" id="desconto-aplicado-criar" placeholder="Desconto Aplicado" step="0.01" required>
         <input type="number" id="preco-final-criar" placeholder="Preço Final" step="0.01" required>
-        <select id="forma-pagamento-criar" required>
-            <option value="" disabled selected>Selecione a Forma de Pagamento</option>
-            <option value="Cartão de Crédito">Cartão de Crédito</option>
-            <option value="Cartão de Débito">Cartão de Débito</option>
-            <option value="Boleto">Boleto</option>
-            <option value="Pix">Pix</option>
-        </select>
-        <select id="status-compra-criar" required>
-            <option value="" disabled selected>Selecione o Status da Compra</option>
-            <option value="Pendente">Pendente</option>
-            <option value="Concluída">Concluída</option>
-            <option value="Cancelada">Cancelada</option>
-        </select>
+        <!-- substituindo selects por inputs de texto simples -->
+        <input type="text" id="forma-pagamento-criar" placeholder="Forma de Pagamento" required>
+        <input type="text" id="status-compra-criar" placeholder="Status da Compra" required>
+
         <button onclick="criarCompra()">Criar</button>
         <div id="res-cadastrar-criar" class="res-cadastrar"></div>
         <table>
@@ -82,19 +76,10 @@
         <input type="number" id="preco-unitario-atualizar" placeholder="Preço Unitário" step="0.01" required>
         <input type="number" id="desconto-aplicado-atualizar" placeholder="Desconto Aplicado" step="0.01" required>
         <input type="number" id="preco-final-atualizar" placeholder="Preço Final" step="0.01" required>
-        <select id="forma-pagamento-atualizar" required>
-            <option value="" disabled selected>Selecione a Forma de Pagamento</option>
-            <option value="Cartão de Crédito">Cartão de Crédito</option>
-            <option value="Cartão de Débito">Cartão de Débito</option>
-            <option value="Boleto">Boleto</option>
-            <option value="Pix">Pix</option>
-        </select>
-        <select id="status-compra-atualizar" required>
-            <option value="" disabled selected>Selecione o Status da Compra</option>
-            <option value="Pendente">Pendente</option>
-            <option value="Concluída">Concluída</option>
-            <option value="Cancelada">Cancelada</option>
-        </select>
+        <!-- substituindo selects por inputs de texto simples -->
+        <input type="text" id="forma-pagamento-atualizar" placeholder="Forma de Pagamento" required>
+        <input type="text" id="status-compra-atualizar" placeholder="Status da Compra" required>
+
         <button onclick="atualizarCompra()">Atualizar</button>
         <button onclick="limparFormularioAtualizar()" id="botao-cancelar" style="display: none;">Cancelar</button>
         <div id="res-cadastrar-atualizar" class="res-cadastrar"></div>
