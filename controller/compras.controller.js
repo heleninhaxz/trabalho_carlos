@@ -33,9 +33,10 @@ const apagar = async (req, res) => {
     const id = req.params.id
 
     try {
-        const deletado = await Compra.destroy({ where: { id } })
+        const buscar = await Compra.findByPk(id)
 
-        if (deletado) {
+        if (buscar) {
+            const deletado = await Compra.destroy({ where: { id } })
             console.log('dado apagado com sucesso.')
             res.status(200).json({ message: 'dado apagado com sucesso.' })
         } else {
@@ -55,8 +56,6 @@ const atualizar = async (req, res) => {
     
     try {
         const buscar = await Compra.findByPk(id)
-
-        console.log('dadsa')
 
         if (buscar) {
             const atualizado = await Compra.update(dados, { where: { id } })
