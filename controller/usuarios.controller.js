@@ -51,7 +51,7 @@ const sequelize = require('sequelize')
 
 const buscarPorNome = async (req, res) => {
     try {
-        const nome = req.params.nome.toLowerCase();
+        const nome = req.params.nome.toLowerCase(); // pega tudo e converte todos os caracteres de uma string para letras minúsculas
 
         const resultados = await Usuario.findAll({
             where: {

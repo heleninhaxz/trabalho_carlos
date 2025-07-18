@@ -3,26 +3,43 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Início - Sistema de Gerenciamento</title>
     <link rel="stylesheet" href="main.css">
 </head>
 
 <body>
-    <header style="background:#f0f0f0; padding:15px; text-align:center; margin-bottom:20px;">
-        <a href="index.html" style="margin:0 15px; text-decoration:none; color:#333; font-weight:bold;">Início</a>
-        <a href="usuario.html" style="margin:0 15px; text-decoration:none; color:#333; font-weight:bold;">Usuários</a>
-        <a href="produto.html" style="margin:0 15px; text-decoration:none; color:#333; font-weight:bold;">Produtos</a>
-        <a href="compra.html" style="margin:0 15px; text-decoration:none; color:#333; font-weight:bold;">Compras</a>
-        <a href="grafico.html" style="margin:0 15px; text-decoration:none; color:#333; font-weight:bold;">Gráficos</a>
-        <a href="api.html" style="margin:0 15px; text-decoration:none; color:#333; font-weight:bold;">API</a>
-        <a href="relatorio.html" style="margin:0 15px; text-decoration:none; color:#333; font-weight:bold;">Relatórios</a>
+    <header class="glass-nav">
+        <nav class="container">
+            <div class="logo">Sistema<span>HN</span></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Início</a></li>
+                <li><a href="usuario.html">Usuários</a></li>
+                <li><a href="produto.html">Produtos</a></li>
+                <li><a href="compra.html">Compras</a></li>
+                <li><a href="grafico.html">Gráficos</a></li>
+                <li><a href="api.html">API</a></li>
+                <li><a href="relatorio.html">Relatórios</a></li>
+            </ul>
+        </nav>
     </header>
-    <h1>Bem-vindo ao Sistema de Gerenciamento</h1>
-    <div class="menu">
-        <a href="usuario.html">Gerenciar Usuários</a>
-        <a href="produto.html">Gerenciar Produtos</a>
-        <a href="compra.html">Gerenciar Compras</a>
-    </div>
+    <main class="container">
+        <h1 class="gradient-text">Bem-vindo ao Sistema de Gerenciamento</h1>
+        <div class="card-grid">
+            <div class="card">
+                <h3>Gerenciar Usuários</h3>
+                <a href="usuario.html" class="card-button">Acessar</a>
+            </div>
+            <div class="card">
+                <h3>Gerenciar Produtos</h3>
+                <a href="produto.html" class="card-button">Acessar</a>
+            </div>
+            <div class="card">
+                <h3>Gerenciar Compras</h3>
+                <a href="compra.html" class="card-button">Acessar</a>
+            </div>
+        </div>
+    </main>
 </body>
 
 </html>

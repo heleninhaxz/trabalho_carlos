@@ -1,87 +1,122 @@
 body {
     font-family: Arial, sans-serif;
-    margin: 20px;
+    margin: 30px;
+    background-color: #f3e5f5;
+    color: #333;
+    font-size: 18px;
 }
 
 h1,
 h2 {
     text-align: center;
+    color: #6a1b9a;
+    font-size: 2.2em;
+    margin-bottom: 24px;
 }
 
 .section {
-    margin-bottom: 30px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    margin-bottom: 40px;
+    padding: 30px;
+    border: 3px solid #ce93d8;
+    border-radius: 16px;
+    background-color: #fff;
     display: none;
-    /* Hide sections by default */
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .section.active {
     display: block;
-    /* Show only the active section */
 }
 
 input,
 select {
-    padding: 5px;
-    margin: 5px;
-    width: 200px;
+    padding: 14px;
+    margin: 10px;
+    width: 320px;
+    font-size: 18px;
+    border-radius: 10px;
+    border: 2px solid #ccc;
 }
 
 button {
-    padding: 5px 10px;
-    margin: 5px;
+    padding: 12px 28px;
+    margin: 10px;
+    background-color: #6a1b9a;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background-color: #ab47bc;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
+    margin-top: 24px;
+    font-size: 18px;
 }
 
 th,
 td {
-    border: 1px solid black;
-    padding: 5px;
+    border: 2px solid #ddd;
+    padding: 10px;
     text-align: left;
 }
 
 th {
-    background-color: #f0f0f0;
+    background-color: #e1bee7;
+    color: #4a148c;
 }
 
 .res-cadastrar {
-    margin-top: 10px;
+    margin-top: 16px;
     color: green;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
 }
 
 .error {
     color: red;
-}
-
-nav {
-    background-color: #f0f0f0;
-    padding: 10px;
-    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: bold;
     text-align: center;
 }
 
+nav {
+    background-color: #e1bee7;
+    padding: 16px;
+    margin-bottom: 30px;
+    text-align: center;
+    border-radius: 12px;
+}
+
 nav a {
-    margin: 0 15px;
+    margin: 0 20px;
     text-decoration: none;
-    color: #333;
+    color: #4a148c;
     font-weight: bold;
+    font-size: 18px;
     cursor: pointer;
+    transition: color 0.3s, border-bottom 0.3s;
 }
 
 nav a:hover {
-    color: #007bff;
+    color: #ab47bc;
 }
 
 nav a.active {
-    color: #007bff;
-    border-bottom: 2px solid #007bff;
+    color: #ab47bc;
+    border-bottom: 3px solid #ab47bc;
 }
 
 html {
